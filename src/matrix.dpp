@@ -8,7 +8,7 @@ class Matrix {
     
     void check(GrB_Info info) {
         if (info != GrB_SUCCESS) {
-            const(char) *msg;
+           const(char) *msg;
             GrB_Matrix_error(&msg, A);
             throw new Exception(to!string(msg));
         }
@@ -33,6 +33,16 @@ class Matrix {
     byte opIndexAssign(byte value, c_ulong i, c_ulong j) {
         check(GrB_Matrix_setElement_INT8(A, value, i, j));
         return value;
+    }
+
+    void min_plus(Matrix B, Matrix C) {
+        check(GrB_mxm(C.A,
+                      GrB_NULL,
+                      GrB_NULL,
+                      GrB_MIN_PLUS_SEMIRING_INT8,
+                      A,
+                      B.A,
+                      GrB_NULL));
     }
 }
 

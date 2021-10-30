@@ -6,12 +6,16 @@ void main() {
     
     auto A = new Matrix(GrB_INT8, 10, 10);
     auto B = new Matrix(GrB_INT8, 10, 10);
+    auto C = new Matrix(GrB_INT8, 10, 10);
     
     A[1, 2] = 1;
     B[2, 3] = 1;
+
+    A.min_plus(B, C);
     
     A.print();
     B.print();
+    C.print();
 
     GrB_finalize();
 }
