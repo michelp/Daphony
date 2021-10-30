@@ -1,6 +1,4 @@
 
-uint INDEX_MAX = 2^^60;
-
 class Matrix {
     import suitesparse, std.string, std.conv;
 
@@ -35,12 +33,12 @@ class Matrix {
         return value;
     }
 
-    void min_plus(Matrix B, Matrix C) {
-        check(GrB_mxm(C.A,
+    void min_plus(Matrix A, Matrix B) {
+        check(GrB_mxm(this.A,
                       GrB_NULL,
                       GrB_NULL,
                       GrB_MIN_PLUS_SEMIRING_INT8,
-                      A,
+                      A.A,
                       B.A,
                       GrB_NULL));
     }
