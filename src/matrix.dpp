@@ -1,0 +1,38 @@
+
+uint INDEX_MAX = 2^^60;
+
+class Matrix {
+    import suitesparse, std.string, std.conv;
+
+    GrB_Matrix A;
+    
+    void check(GrB_Info info) {
+        if (info != GrB_SUCCESS) {
+            const(char) *msg;
+            GrB_Matrix_error(&msg, A);
+            throw new Exception(to!string(msg));
+        }
+    }
+
+    this(GrB_Type T, GrB_Index nrows, GrB_Index ncols) {
+        check(GrB_Matrix_new(&A, T, nrows, ncols));
+    }
+
+    this(GrB_Type T) {
+        this(T, INDEX_MAX, INDEX_MAX);
+    }
+
+    ~this() {
+        check(GrB_Matrix_free(&A));
+    }
+    
+    void print() {
+        check(GxB_Matrix_fprint(A, "", GxB_SHORT, stdout));
+    }
+    
+    byte opIndexAssign(byte value, c_ulong i, c_ulong j) {
+        check(GrB_Matrix_setElement_INT8(A, value, i, j));
+        return value;
+    }
+}
+

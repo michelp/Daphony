@@ -1,0 +1,18 @@
+import suitesparse, matrix, vector;
+
+
+void main() {
+    GrB_init(GrB_NONBLOCKING);
+    
+    auto A = new Matrix(GrB_INT8, 10, 10);
+    auto B = new Matrix(GrB_INT8, 10, 10);
+    
+    A[1, 2] = 1;
+    B[2, 3] = 1;
+    
+    A.print();
+    B.print();
+
+    GrB_finalize();
+}
+    

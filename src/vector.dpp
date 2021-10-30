@@ -1,0 +1,38 @@
+
+uint INDEX_MAX = 2^^60;
+
+class Vector {
+    import suitesparse, std.string, std.conv;
+
+    GrB_Vector v;
+    
+    void check(GrB_Info info) {
+        if (info != GrB_SUCCESS) {
+            const(char) *msg;
+            GrB_Vector_error(&msg, v);
+            throw new Exception(to!string(msg));
+        }
+    }
+
+    this(GrB_Type T, GrB_Index size) {
+        check(GrB_Vector_new(&v, T, size));
+    }
+
+    this(GrB_Type T) {
+        this(T, INDEX_MAX);
+    }
+
+    ~this() {
+        check(GrB_Vector_free(&v));
+    }
+    
+    void print() {
+        check(GxB_Vector_fprint(v, "", GxB_SHORT, stdout));
+    }
+    
+    byte opIndexAssign(byte value, c_ulong i) {
+        check(GrB_Vector_setElement_INT8(v, value, i));
+        return value;
+    }
+}
+
